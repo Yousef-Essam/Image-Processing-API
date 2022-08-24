@@ -9,3 +9,4 @@ To compile the files use : npm run build<br>
 Accessing '/' endpoint redirects to the /api route.<br>
 Type /api/images followed by the query paramters which contain the filename, the width and the height of the desired processed image.<br>
 The package used for the processing is Sharp which includes many functionality including resizing.<br>
+Documentations linked on the npmjs.com site for the packages were used as a reference for the code used in this project.<br>
