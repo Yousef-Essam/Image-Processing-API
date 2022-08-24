@@ -6,4 +6,6 @@ It is used to test the functionality of the resizing process whether it created 
 The endpoints of the applications are tested to test the process of creating the processed image and its caching.<br>
 To run the server application use: npm run start<br>
 To compile the files use : npm run build<br>
+Accessing '/' endpoint redirects to the /api route.<br>
 Type /api/images followed by the query paramters which contain the filename, the width and the height of the desired processed image.<br>
+The package used for the processing is Sharp which includes many functionality including resizing.<br>
