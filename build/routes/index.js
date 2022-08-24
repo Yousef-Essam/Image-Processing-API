@@ -41,6 +41,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var express_1 = __importDefault(require("express"));
 var promises_1 = __importDefault(require("fs/promises"));
+var imageExists_1 = __importDefault(require("../utilities/imageExists"));
 var thumbExists_1 = __importDefault(require("../utilities/thumbExists"));
 var processImage_1 = __importDefault(require("../utilities/processImage"));
 var routes = express_1.default.Router();
@@ -49,36 +50,59 @@ routes.get('/images', function (req, res) { return __awaiter(void 0, void 0, voi
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                _a.trys.push([0, 7, , 8]);
                 filename = req.query.filename;
                 width = Number(req.query.width);
                 height = Number(req.query.height);
+                if (!!('filename' in req.query && 'width' in req.query && 'height' in req.query)) return [3 /*break*/, 1];
+                res
+                    .status(400)
+                    .send('Bad Request! You must enter the filename, and the dimensions of the processed image.');
+                return [3 /*break*/, 14];
+            case 1:
+                if (!(isNaN(width) || isNaN(height) || width <= 0 || height <= 0)) return [3 /*break*/, 2];
+                res.status(400).send('Bad Request! Dimensions must be a positive number.');
+                return [3 /*break*/, 14];
+            case 2: return [4 /*yield*/, (0, imageExists_1.default)("".concat(filename, ".jpg"))];
+            case 3:
+                if (!_a.sent()) return [3 /*break*/, 13];
+                _a.label = 4;
+            case 4:
+                _a.trys.push([4, 11, , 12]);
                 thumbKey = "".concat(filename, "-").concat(width, "x").concat(height, ".jpg");
                 processedImg = void 0;
                 return [4 /*yield*/, (0, thumbExists_1.default)(filename, width, height)];
-            case 1:
-                if (!!(_a.sent())) return [3 /*break*/, 4];
+            case 5:
+                if (!!(_a.sent())) return [3 /*break*/, 8];
+                console.log('Creating Processed Image');
                 return [4 /*yield*/, promises_1.default.readFile("assets/full/".concat(filename, ".jpg"))];
-            case 2:
+            case 6:
                 img = _a.sent();
                 return [4 /*yield*/, (0, processImage_1.default)(img, width, height)];
-            case 3:
+            case 7:
                 processedImg = _a.sent();
                 promises_1.default.writeFile("assets/thumbs/".concat(thumbKey), processedImg);
-                return [3 /*break*/, 6];
-            case 4: return [4 /*yield*/, promises_1.default.readFile("assets/thumbs/".concat(thumbKey))];
-            case 5:
+                return [3 /*break*/, 10];
+            case 8:
+                console.log('Reading Cached Image');
+                return [4 /*yield*/, promises_1.default.readFile("assets/thumbs/".concat(thumbKey))];
+            case 9:
                 processedImg = _a.sent();
-                _a.label = 6;
-            case 6:
+                _a.label = 10;
+            case 10:
                 res.end(processedImg);
-                return [3 /*break*/, 8];
-            case 7:
+                return [3 /*break*/, 12];
+            case 11:
                 err_1 = _a.sent();
                 console.log(err_1);
-                res.send('An error occured during loading the image.');
-                return [3 /*break*/, 8];
-            case 8: return [2 /*return*/];
+                res.status(404).send('An error occured during loading the image.');
+                return [3 /*break*/, 12];
+            case 12: return [3 /*break*/, 14];
+            case 13:
+                res
+                    .status(404)
+                    .send('Image not Found! The Image you are trying to process does not exist.');
+                _a.label = 14;
+            case 14: return [2 /*return*/];
         }
     });
 }); });

@@ -1,9 +1,9 @@
-import sharp from 'sharp';
+import sharp from 'sharp'
 
 const processImage = async (img: Buffer, width: number, height: number) => {
-    let newImg = await sharp(img).resize({width, height}).toBuffer();
+  const newImg = await sharp(img).resize({ width, height }).toBuffer()
 
-    return newImg;
+  return newImg
 }
 
-export default processImage;
+export default processImage

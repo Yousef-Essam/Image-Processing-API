@@ -8,7 +8,11 @@ var index_1 = __importDefault(require("./routes/index"));
 var app = (0, express_1.default)();
 var port = 3000;
 app.use('/api', index_1.default);
+app.get('/', function (req, res) {
+    res.redirect('/api');
+});
 app.listen(port, function () {
     console.log("--server listening on port ".concat(port));
 });
+exports.default = app;
 //# sourceMappingURL=index.js.map
