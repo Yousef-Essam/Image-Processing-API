@@ -6,7 +6,7 @@ import processImage from '../utilities/processImage'
 
 const routes = express.Router()
 
-routes.get('/images', async (req, res) => {
+routes.get('/images', async (req: express.Request, res: express.Response): void => {
   const filename = req.query.filename as string
   const width = Number(req.query.width)
   const height = Number(req.query.height)
@@ -50,7 +50,7 @@ routes.get('/images', async (req, res) => {
       )
 })
 
-routes.get('/', (req, res) => {
+routes.get('/', (req: express.Request, res: express.Response): void => {
   res.send(`Welcome in the Image Processing Application.<br>
     Please Enter the name of the image you want to process along with the desired dimensions.<br>
     Enter the image information in the following format:<br>
